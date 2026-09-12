@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reShop - Homebrew Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nintendo: {
+                            red: '#E60012',
+                            darkred: '#CC000F',
+                            lightred: '#FF4D59',
+                            bg: '#F4F4F7',
+                            card: '#FFFFFF',
+                            text: '#2D3748',
+                            muted: '#718096'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #EDF2F7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A0AEC0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-nintendo-bg text-nintendo-text font-sans h-full flex flex-col antialiased selection:bg-nintendo-red selection:text-white">
+
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo: Nintendo eShop Shopping Bag in Solid Red + Homebrew Store subtitle -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchTab('juegos')">
+                    <div class="w-12 h-12 bg-nintendo-red rounded-2xl flex items-center justify-center text-white shadow-md shadow-red-500/30 transform group-hover:scale-105 transition-transform duration-200 p-2.5">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                            <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm-9-1a2 2 0 0 1 4 0v1h-4V6zm9 13H5V9h3v2h2V9h4v2h2V9h3v10z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-baseline space-x-1.5">
+                            <span class="text-2xl font-black tracking-tight text-gray-900">re<span class="text-nintendo-red">Shop</span></span>
+                        </div>
+                        <span class="block text-xs font-semibold text-nintendo-muted uppercase tracking-widest">Homebrew Store</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs (3 tabs: Juegos, Ports, Ajustes) -->
+                <nav class="hidden md:flex space-x-2">
+                    <button onclick="switchTab('juegos')" id="tab-btn-juegos" class="nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 bg-nintendo-red text-white shadow-md shadow-red-500/20">
+                        <i class="fa-solid fa-store"></i>
+                        <span>Juegos</span>
+                    </button>
+                    <button onclick="switchTab('ports')" id="tab-btn-ports" class="nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+                        <i class="fa-solid fa-code-merge"></i>
+                        <span>Ports</span>
+                    </button>
+                    <button onclick="switchTab('ajustes')" id="tab-btn-ajustes" class="nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Ajustes</span>
+                    </button>
+                </nav>
+
+                <!-- User profile & aesthetic catalog indicator -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="switchTab('ajustes')" class="hidden sm:flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors duration-200" title="Origen de datos">
+                        <i class="fa-solid fa-link text-nintendo-red"></i>
+                        <span id="datasource-badge-text" class="truncate max-w-[140px]">Catálogo en línea</span>
+                    </button>
+                    <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-white shadow-inner flex items-center justify-center overflow-hidden text-gray-600 font-bold">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Bar -->
+        <div class="md:hidden flex justify-around bg-white border-t border-gray-100 py-2.5 px-2">
+            <button onclick="switchTab('juegos')" id="mobile-tab-juegos" class="mobile-nav-btn flex flex-col items-center text-nintendo-red text-xs font-bold">
+                <i class="fa-solid fa-store text-lg mb-0.5"></i>
+                <span>Juegos</span>
+            </button>
+            <button onclick="switchTab('ports')" id="mobile-tab-ports" class="mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold">
+                <i class="fa-solid fa-code-merge text-lg mb-0.5"></i>
+                <span>Ports</span>
+            </button>
+            <button onclick="switchTab('ajustes')" id="mobile-tab-ajustes" class="mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold">
+                <i class="fa-solid fa-gear text-lg mb-0.5"></i>
+                <span>Ajustes</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-y-auto">
+
+        <!-- SECTION: JUEGOS -->
+        <section id="section-juegos" class="tab-content animate-fade-in">
+            <div class="relative bg-gradient-to-r from-nintendo-red to-red-700 rounded-3xl p-6 sm:p-10 text-white shadow-xl mb-10 overflow-hidden">
+                <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-10 pointer-events-none flex items-center justify-end pr-10">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-64 h-64">
+                        <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm-9-1a2 2 0 0 1 4 0v1h-4V6zm9 13H5V9h3v2h2V9h4v2h2V9h3v10z"/>
+                    </svg>
+                </div>
+                <div class="relative z-10 max-w-xl">
+                    <span class="bg-white/20 text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block backdrop-blur-sm">Sincronización Dinámica</span>
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight mb-3">Catálogo Homebrew</h1>
+                    <p class="text-red-100 text-sm sm:text-base mb-6 font-medium leading-relaxed">Cargado dinámicamente desde el repositorio remoto.</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="loadCatalogData()" class="bg-white text-nintendo-red font-bold px-6 py-3 rounded-2xl shadow-lg hover:bg-red-50 transition-all transform hover:-translate-y-0.5 flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-rotate"></i>
+                            <span>Actualizar catálogo</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+                <div class="relative w-full sm:w-96">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="game-search" oninput="filterGames()" placeholder="Buscar título..." class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:border-nintendo-red transition-all shadow-sm">
+                </div>
+                <div class="flex items-center space-x-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0" id="category-filters-container">
+                    <button onclick="filterCategory('all')" id="filter-btn-all" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-nintendo-red text-white shadow-sm transition-all whitespace-nowrap">Todos</button>
+                </div>
+            </div>
+
+            <!-- Status Indicator -->
+            <div id="catalog-status" class="hidden mb-6 p-4 rounded-2xl text-center text-sm font-semibold"></div>
+
+            <!-- Game Grid -->
+            <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Poblado dinámicamente -->
+            </div>
+        </section>
+
+        <!-- SECTION: PORTS -->
+        <section id="section-ports" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-10 h-10 rounded-xl bg-red-100 text-nintendo-red flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-code-merge text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-900">Ports & Homebrew</h2>
+                        <p class="text-sm text-nintendo-muted font-medium">Elementos filtrados automáticamente desde el catálogo.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="ports-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Poblado dinámicamente -->
+            </div>
+        </section>
+
+        <!-- SECTION: AJUSTES (Including Add Game feature) -->
+        <section id="section-ajustes" class="tab-content hidden animate-fade-in max-w-3xl mx-auto space-y-8">
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200 space-y-8">
+                <div class="flex items-center space-x-3 pb-6 border-b border-gray-100">
+                    <div class="w-12 h-12 rounded-2xl bg-red-100 text-nintendo-red flex items-center justify-center font-bold text-xl">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-900">Ajustes & Conexión de Repositorio</h2>
+                        <p class="text-sm text-nintendo-muted">Configura el archivo del repositorio para el catálogo.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-link text-nintendo-red"></i>
+                        <span>URL del repositorio del catálogo</span>
+                    </h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Por defecto apunta a tu archivo <code class="font-mono bg-gray-100 px-1 py-0.5 rounded">switch_games.json</code>. Puedes cambiarlo si lo deseas.</p>
+                    <div class="flex gap-3">
+                        <input type="url" id="setting-repo-url" placeholder="switch_games.json" class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:bg-white">
+                        <button onclick="saveRepositoryUrl()" class="bg-nintendo-red text-white font-bold px-6 py-3 rounded-2xl text-sm shadow-md hover:bg-red-700 transition-all whitespace-nowrap">Conectar</button>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-file-arrow-down text-nintendo-red"></i>
+                        <span>Exportar Catálogo</span>
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="exportCatalogJson()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold px-5 py-3 rounded-2xl text-sm transition-colors flex items-center space-x-2">
+                            <i class="fa-solid fa-download text-nintendo-red"></i>
+                            <span>Descargar respaldo del catálogo</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AGREGAR AL CATÁLOGO LOCAL -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-200">
+                <div class="flex items-center space-x-3 mb-6 pb-6 border-b border-gray-100">
+                    <div class="w-12 h-12 rounded-2xl bg-red-100 text-nintendo-red flex items-center justify-center font-bold text-xl">
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-900">Agregar al Catálogo Local</h2>
+                        <p class="text-sm text-nintendo-muted">Añade elementos para incluirlos en tu catálogo activo.</p>
+                    </div>
+                </div>
+
+                <form id="add-game-form" onsubmit="handleAddNewGame(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Título</label>
+                        <input type="text" id="new-title" required placeholder="Ej: Drakkar Crew [NSZ]" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:bg-white transition-all">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Género / Categoría</label>
+                            <input type="text" id="new-category" required placeholder="Ej: Action, Role-Playing" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:bg-white transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Tamaño (Size)</label>
+                            <input type="text" id="new-size" required placeholder="Ej: 442.3 MB" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:bg-white transition-all">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">URL de la Portada (Cover)</label>
+                            <input type="url" id="new-cover" placeholder="https://..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:bg-white transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Enlace Magnet / Descarga</label>
+                            <input type="text" id="new-magnet" placeholder="magnet:?xt=..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:bg-white transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Descripción</label>
+                        <textarea id="new-desc" rows="3" required placeholder="Detalles del juego..." class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50 focus:bg-white transition-all"></textarea>
+                    </div>
+                    <div class="pt-4 flex items-center justify-end space-x-3">
+                        <button type="submit" class="bg-nintendo-red hover:bg-red-700 text-white font-bold px-8 py-3 rounded-2xl shadow-lg shadow-red-500/20 transition-all text-sm">
+                            Guardar en el Catálogo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="game-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl animate-fade-in max-h-[90vh] flex flex-col">
+            <div class="relative h-56 bg-gray-900 overflow-hidden flex items-center justify-center" id="modal-img-container">
+                <img id="modal-image" src="" alt="Game Art" class="w-full h-full object-cover opacity-90" onerror="this.src='https://placehold.co/600x400/E60012/FFFFFF?text=reShop+Game'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors backdrop-blur-sm">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                <div class="absolute bottom-4 left-6 right-6">
+                    <span id="modal-category" class="bg-nintendo-red text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Género</span>
+                    <h2 id="modal-title" class="text-2xl font-black text-white leading-tight">Título</h2>
+                </div>
+            </div>
+            <div class="p-6 space-y-5 overflow-y-auto flex-1">
+                <div class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div>
+                        <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block">Tamaño (Size)</span>
+                        <span id="modal-size" class="text-lg font-black text-nintendo-red">0 MB</span>
+                    </div>
+                    <a id="modal-magnet-btn" href="#" target="_blank" class="bg-nintendo-red hover:bg-red-700 text-white font-bold px-6 py-3 rounded-2xl shadow-lg shadow-red-500/20 text-sm flex items-center space-x-2 transition-all">
+                        <i class="fa-solid fa-magnet"></i>
+                        <span>Abrir Magnet</span>
+                    </a>
+                </div>
+
+                <!-- Technical Metadata Grid -->
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <span class="text-gray-400 font-bold block mb-0.5 uppercase tracking-wider">Desarrollador</span>
+                        <span id="modal-dev" class="font-bold text-gray-800">-</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <span class="text-gray-400 font-bold block mb-0.5 uppercase tracking-wider">Publicador</span>
+                        <span id="modal-pub" class="font-bold text-gray-800">-</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <span class="text-gray-400 font-bold block mb-0.5 uppercase tracking-wider">Rendimiento</span>
+                        <span id="modal-perf" class="font-bold text-gray-800">-</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <span class="text-gray-400 font-bold block mb-0.5 uppercase tracking-wider">Año / Fecha</span>
+                        <span id="modal-year" class="font-bold text-gray-800">-</span>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+                <div>
+                    <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Descripción</span>
+                    <p id="modal-desc" class="text-gray-600 text-sm leading-relaxed font-medium">Descripción...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gamesCatalog = [];
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        const defaultRepoUrl = 'switch_games.json';
+        let remoteJsonUrl = localStorage.getItem('reshop_repo_url') || defaultRepoUrl;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('setting-repo-url').value = remoteJsonUrl;
+            loadCatalogData();
+        });
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`section-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = "nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900";
+            });
+            const activeDesktopBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeDesktopBtn) {
+                activeDesktopBtn.className = "nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 bg-nintendo-red text-white shadow-md shadow-red-500/20";
+            }
+
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                btn.className = "mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold";
+            });
+            const activeMobileBtn = document.getElementById(`mobile-tab-${tabId}`);
+            if (activeMobileBtn) {
+                activeMobileBtn.className = "mobile-nav-btn flex flex-col items-center text-nintendo-red text-xs font-bold";
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function loadCatalogData() {
+            const statusEl = document.getElementById('catalog-status');
+            statusEl.classList.remove('hidden');
+            statusEl.className = "mb-6 p-4 rounded-2xl text-center text-sm font-semibold bg-blue-50 text-blue-700";
+            statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Actualizando catálogo...`;
+
+            try {
+                const response = await fetch(remoteJsonUrl);
+                if (!response.ok) throw new Error('No se pudo conectar con el repositorio remoto.');
+                const data = await response.json();
+                
+                if (Array.isArray(data)) {
+                    const localCustom = localStorage.getItem('reshop_custom_catalog');
+                    const customItems = localCustom ? JSON.parse(localCustom) : [];
+                    gamesCatalog = [...customItems, ...data];
+
+                    statusEl.className = "mb-6 p-4 rounded-2xl text-center text-sm font-semibold bg-emerald-50 text-emerald-700";
+                    statusEl.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> Catálogo actualizado correctamente (${gamesCatalog.length} elementos).`;
+                    setTimeout(() => statusEl.classList.add('hidden'), 4000);
+                } else {
+                    throw new Error('El formato del archivo JSON debe ser una lista.');
+                }
+            } catch (err) {
+                console.warn(err);
+                const localCustom = localStorage.getItem('reshop_custom_catalog');
+                gamesCatalog = localCustom ? JSON.parse(localCustom) : [];
+                
+                statusEl.className = "mb-6 p-4 rounded-2xl text-center text-sm font-semibold bg-amber-50 text-amber-800";
+                statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> ${err.message}. Mostrando solo elementos locales guardados.`;
+            }
+
+            buildCategoryFilters();
+            renderGames();
+            renderPorts();
+        }
+
+        function buildCategoryFilters() {
+            const container = document.getElementById('category-filters-container');
+            container.innerHTML = `<button onclick="filterCategory('all')" id="filter-btn-all" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold ${currentFilter === 'all' ? 'bg-nintendo-red text-white' : 'bg-white text-gray-600 hover:bg-gray-100'} shadow-sm transition-all whitespace-nowrap">Todos</button>`;
+            
+            let rawGenres = [];
+            gamesCatalog.forEach(g => {
+                if (g.genre) {
+                    g.genre.split(',').forEach(sub => rawGenres.push(sub.trim()));
+                }
+            });
+            const categories = [...new Set(rawGenres)].filter(Boolean);
+
+            categories.forEach(cat => {
+                if (cat.toLowerCase() === 'port') return;
+                const isActive = currentFilter.toLowerCase() === cat.toLowerCase();
+                const btn = document.createElement('button');
+                btn.onclick = () => filterCategory(cat);
+                btn.id = `filter-btn-${cat}`;
+                btn.className = `filter-btn px-4 py-2 rounded-xl text-xs font-bold ${isActive ? 'bg-nintendo-red text-white' : 'bg-white text-gray-600 hover:bg-gray-100'} shadow-sm transition-all whitespace-nowrap`;
+                btn.innerText = cat;
+                container.appendChild(btn);
+            });
+        }
+
+        function renderGames() {
+            const grid = document.getElementById('game-grid');
+            grid.innerHTML = '';
+
+            const filtered = gamesCatalog.filter(game => {
+                const genre = game.genre || 'General';
+                const matchesCategory = currentFilter === 'all' || genre.toLowerCase().includes(currentFilter.toLowerCase());
+                const title = game.title || '';
+                const desc = game.description || '';
+                const matchesSearch = title.toLowerCase().includes(currentSearchQuery.toLowerCase()) || 
+                                      desc.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-gray-100">
+                        <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-700">Sin resultados en el catálogo</h3>
+                        <p class="text-sm text-gray-400 mt-1">Verifica la conexión del repositorio en Ajustes.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(game => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer transform hover:-translate-y-1";
+                card.onclick = () => openModal(game);
+
+                const coverImg = game.cover || game.image || 'https://placehold.co/600x400/E60012/FFFFFF?text=reShop';
+                const displayGenre = game.genre ? game.genre.split(',')[0].trim() : 'Homebrew';
+                const displaySize = game.size || 'N/A';
+
+                card.innerHTML = `
+                    <div class="relative h-48 bg-gray-100 overflow-hidden">
+                        <img src="${coverImg}" alt="${game.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/E60012/FFFFFF?text=reShop'">
+                        <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs font-black px-3 py-1 rounded-full">
+                            ${displaySize}
+                        </div>
+                        <div class="absolute top-3 left-3 bg-nintendo-red text-white text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                            ${displayGenre}
+                        </div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-extrabold text-gray-900 text-base mb-1.5 group-hover:text-nintendo-red transition-colors line-clamp-1">${game.title || 'Sin título'}</h3>
+                            <p class="text-xs text-gray-500 font-medium line-clamp-2 leading-relaxed">${game.description || ''}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs font-bold text-nintendo-red">
+                            <span>Ver detalles</span>
+                            <i class="fa-solid fa-chevron-right text-[10px] transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderPorts() {
+            const portsGrid = document.getElementById('ports-grid');
+            portsGrid.innerHTML = '';
+
+            const ports = gamesCatalog.filter(game => {
+                const genre = (game.genre || '').toLowerCase();
+                const title = (game.title || '').toLowerCase();
+                return genre.includes('port') || title.includes('port') || genre.includes('homebrew');
+            });
+
+            if (ports.length === 0) {
+                portsGrid.innerHTML = `
+                    <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-gray-100">
+                        <div class="w-16 h-16 bg-red-50 text-nintendo-red rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                            <i class="fa-solid fa-code-merge"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-700">No hay ports en el catálogo</h3>
+                        <p class="text-sm text-gray-400 mt-1">Añade elementos con categoría "Port".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            ports.forEach(port => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer";
+                card.onclick = () => openModal(port);
+
+                const coverImg = port.cover || port.image || 'https://placehold.co/600x400/2D3748/FFFFFF?text=Port';
+
+                card.innerHTML = `
+                    <div class="relative h-44 bg-gray-900 overflow-hidden">
+                        <img src="${coverImg}" alt="${port.title}" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/2D3748/FFFFFF?text=Port'">
+                        <div class="absolute top-3 left-3 bg-gray-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full border border-white/20">
+                            Homebrew / Port
+                        </div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-extrabold text-gray-900 text-base mb-1.5 group-hover:text-nintendo-red transition-colors">${port.title}</h3>
+                            <p class="text-xs text-gray-500 font-medium line-clamp-2">${port.description || ''}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs font-bold text-gray-700">
+                            <span class="text-emerald-600 font-black">${port.size || 'N/A'}</span>
+                            <span class="text-nintendo-red">Ver port &rarr;</span>
+                        </div>
+                    </div>
+                `;
+                portsGrid.appendChild(card);
+            });
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            buildCategoryFilters();
+            renderGames();
+        }
+
+        function filterGames() {
+            currentSearchQuery = document.getElementById('game-search').value;
+            renderGames();
+        }
+
+        function handleAddNewGame(e) {
+            e.preventDefault();
+            const newGame = {
+                title: document.getElementById('new-title').value,
+                size: document.getElementById('new-size').value,
+                genre: document.getElementById('new-category').value,
+                cover: document.getElementById('new-cover').value || 'https://placehold.co/600x400/E60012/FFFFFF?text=reShop',
+                magnet: document.getElementById('new-magnet').value || '#',
+                description: document.getElementById('new-desc').value,
+                developer: 'Local User',
+                publisher: 'Local',
+                year: '2026',
+                performance: 'N/A'
+            };
+
+            let localCustom = localStorage.getItem('reshop_custom_catalog');
+            let customItems = localCustom ? JSON.parse(localCustom) : [];
+            customItems.unshift(newGame);
+            localStorage.setItem('reshop_custom_catalog', JSON.stringify(customItems));
+
+            document.getElementById('add-game-form').reset();
+            loadCatalogData();
+            switchTab('juegos');
+        }
+
+        function openModal(game) {
+            document.getElementById('modal-title').innerText = game.title || 'Sin título';
+            document.getElementById('modal-category').innerText = game.genre || 'Homebrew';
+            document.getElementById('modal-size').innerText = game.size || 'N/A';
+            document.getElementById('modal-desc').innerText = game.description || 'Sin descripción disponible.';
+            document.getElementById('modal-dev').innerText = game.developer || 'N/A';
+            document.getElementById('modal-pub').innerText = game.publisher || 'N/A';
+            document.getElementById('modal-perf').innerText = game.performance || 'N/A';
+            document.getElementById('modal-year').innerText = game.year || 'N/A';
+            
+            const coverImg = game.cover || game.image || 'https://placehold.co/600x400/E60012/FFFFFF?text=reShop';
+            document.getElementById('modal-image').src =coverImg;
+
+            const magnetBtn = document.getElementById('modal-magnet-btn');
+            if (game.magnet) {
+                magnetBtn.href = game.magnet;
+                magnetBtn.style.display = 'flex';
+            } else {
+                magnetBtn.style.display = 'none';
+            }
+
+            document.getElementById('game-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('game-modal').classList.add('hidden');
+        }
+
+        function saveRepositoryUrl() {
+            const url = document.getElementById('setting-repo-url').value.trim() || defaultRepoUrl;
+            remoteJsonUrl = url;
+            localStorage.setItem('reshop_repo_url', url);
+            loadCatalogData();
+            switchTab('juegos');
+        }
+
+        function exportCatalogJson() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gamesCatalog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "switch_games.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
