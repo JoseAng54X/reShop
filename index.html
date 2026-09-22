@@ -80,43 +80,63 @@
                     </div>
                 </div>
 
-                <!-- Desktop Navigation Tabs -->
-                <nav class="hidden md:flex space-x-2">
-                    <button onclick="switchTab('juegos')" id="tab-btn-juegos" class="nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 bg-nintendo-red text-white shadow-md shadow-red-500/20">
-                        <i class="fa-solid fa-store"></i>
+                <!-- Desktop Navigation Tabs (Botones de Juegos y Ports más grandes) -->
+                <nav class="hidden md:flex space-x-4">
+                    <button onclick="switchTab('juegos')" id="tab-btn-juegos" class="nav-btn px-7 py-3.5 rounded-2xl font-black text-base transition-all duration-200 flex items-center space-x-3 bg-nintendo-red text-white shadow-lg shadow-red-500/25">
+                        <i class="fa-solid fa-store text-lg"></i>
                         <span data-i18n="tab_games">Juegos</span>
                     </button>
-                    <button onclick="switchTab('ports')" id="tab-btn-ports" class="nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900">
-                        <i class="fa-solid fa-code-merge"></i>
+                    <button onclick="switchTab('ports')" id="tab-btn-ports" class="nav-btn px-7 py-3.5 rounded-2xl font-black text-base transition-all duration-200 flex items-center space-x-3 text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900">
+                        <i class="fa-solid fa-puzzle-piece text-lg text-nintendo-red"></i>
                         <span data-i18n="tab_ports">Ports</span>
-                    </button>
-                    <button onclick="switchTab('ajustes')" id="tab-btn-ajustes" class="nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900">
-                        <i class="fa-solid fa-gear"></i>
-                        <span data-i18n="tab_settings">Ajustes</span>
                     </button>
                 </nav>
 
-                <!-- User profile indicator -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-white shadow-inner flex items-center justify-center overflow-hidden text-gray-600 font-bold">
-                        <i class="fa-solid fa-user"></i>
+                <!-- User profile indicator with Dropdown Menu -->
+                <div class="relative">
+                    <div onclick="toggleUserMenu(event)" class="w-11 h-11 rounded-full bg-gray-100 border-2 border-gray-200 shadow-sm flex items-center justify-center overflow-hidden text-gray-700 font-bold cursor-pointer hover:border-nintendo-red transition-all">
+                        <i class="fa-solid fa-user text-base"></i>
+                    </div>
+
+                    <!-- Mini Menú Desplegable -->
+                    <div id="user-dropdown-menu" class="hidden absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 animate-fade-in">
+                        <div class="px-4 py-2 border-b border-gray-100">
+                            <p class="text-xs font-bold text-gray-400 uppercase">Mi Cuenta</p>
+                            <p class="text-sm font-extrabold text-gray-800">Invitado</p>
+                        </div>
+                        <div class="py-1">
+                            <button onclick="openAuthModal('register')" class="w-full text-left px-4 py-2.5 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-nintendo-red flex items-center space-x-2.5 transition-colors">
+                                <i class="fa-solid fa-user-plus text-xs"></i>
+                                <span data-i18n="menu_register">Registrarse</span>
+                            </button>
+                            <button onclick="openAuthModal('login')" class="w-full text-left px-4 py-2.5 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-nintendo-red flex items-center space-x-2.5 transition-colors">
+                                <i class="fa-solid fa-right-to-bracket text-xs"></i>
+                                <span data-i18n="menu_login">Iniciar sesión</span>
+                            </button>
+                        </div>
+                        <div class="border-t border-gray-100 pt-1">
+                            <button onclick="switchTab('ajustes'); closeUserMenu();" class="w-full text-left px-4 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-100 flex items-center space-x-2.5 transition-colors">
+                                <i class="fa-solid fa-gear text-xs text-gray-500"></i>
+                                <span data-i18n="tab_settings">Ajustes</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Navigation Bar -->
-        <div class="md:hidden flex justify-around bg-white border-t border-gray-100 py-2.5 px-2">
+        <div class="md:hidden flex justify-around bg-white border-t border-gray-100 py-3 px-2">
             <button onclick="switchTab('juegos')" id="mobile-tab-juegos" class="mobile-nav-btn flex flex-col items-center text-nintendo-red text-xs font-bold">
-                <i class="fa-solid fa-store text-lg mb-0.5"></i>
+                <i class="fa-solid fa-store text-xl mb-1"></i>
                 <span data-i18n="tab_games">Juegos</span>
             </button>
             <button onclick="switchTab('ports')" id="mobile-tab-ports" class="mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold">
-                <i class="fa-solid fa-code-merge text-lg mb-0.5"></i>
+                <i class="fa-solid fa-puzzle-piece text-xl mb-1"></i>
                 <span data-i18n="tab_ports">Ports</span>
             </button>
             <button onclick="switchTab('ajustes')" id="mobile-tab-ajustes" class="mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold">
-                <i class="fa-solid fa-gear text-lg mb-0.5"></i>
+                <i class="fa-solid fa-gear text-xl mb-1"></i>
                 <span data-i18n="tab_settings">Ajustes</span>
             </button>
         </div>
@@ -226,7 +246,7 @@
             <div class="mb-8">
                 <div class="flex items-center space-x-3 mb-2">
                     <div class="w-10 h-10 rounded-xl bg-red-100 text-nintendo-red flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-code-merge text-xl"></i>
+                        <i class="fa-solid fa-puzzle-piece text-xl"></i>
                     </div>
                     <div>
                         <h2 class="text-2xl font-black text-gray-900" data-i18n="ports_heading">Ports & Homebrew</h2>
@@ -420,6 +440,18 @@
         </div>
     </div>
 
+    <!-- MODAL DE AUTENTICACIÓN (Registro / Iniciar Sesión) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl animate-fade-in p-6 sm:p-8 relative">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+            <div id="auth-modal-content" class="space-y-6">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
     <script>
         const translations = {
             es: {
@@ -427,6 +459,8 @@
                 tab_games: "Juegos",
                 tab_ports: "Ports",
                 tab_settings: "Ajustes",
+                menu_register: "Registrarse",
+                menu_login: "Iniciar sesión",
                 catalog_title: "Catálogo de Juegos",
                 catalog_desc: "Cargado dinámicamente desde el servidor.",
                 refresh_btn: "Actualizar catálogo",
@@ -483,6 +517,8 @@
                 tab_games: "Games",
                 tab_ports: "Ports",
                 tab_settings: "Settings",
+                menu_register: "Register",
+                menu_login: "Sign In",
                 catalog_title: "Game Catalog",
                 catalog_desc: "Dynamically loaded from the server.",
                 refresh_btn: "Refresh catalog",
@@ -557,6 +593,82 @@
             loadCatalogData();
         });
 
+        // Funciones para el mini menú de perfil y clics fuera
+        function toggleUserMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('user-dropdown-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function closeUserMenu() {
+            const menu = document.getElementById('user-dropdown-menu');
+            if (menu) menu.classList.add('hidden');
+        }
+
+        window.addEventListener('click', (e) => {
+            closeUserMenu();
+            const modalEl = document.getElementById('game-modal');
+            if (e.target === modalEl) {
+                closeModal();
+            }
+            const authModal = document.getElementById('auth-modal');
+            if (e.target === authModal) {
+                closeAuthModal();
+            }
+        });
+
+        function openAuthModal(type) {
+            closeUserMenu();
+            const modal = document.getElementById('auth-modal');
+            const content = document.getElementById('auth-modal-content');
+            
+            if (type === 'register') {
+                content.innerHTML = `
+                    <div class="text-center space-y-1">
+                        <div class="w-12 h-12 rounded-2xl bg-red-100 text-nintendo-red flex items-center justify-center mx-auto text-xl mb-3"><i class="fa-solid fa-user-plus"></i></div>
+                        <h3 class="text-xl font-black text-gray-900">Crear una cuenta</h3>
+                        <p class="text-xs text-gray-500">Regístrate para guardar tus preferencias en reShop</p>
+                    </div>
+                    <form onsubmit="event.preventDefault(); alert('Función de registro simulada'); closeAuthModal();" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Usuario</label>
+                            <input type="text" required placeholder="Tu nombre" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Contraseña</label>
+                            <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50">
+                        </div>
+                        <button type="submit" class="w-full bg-nintendo-red hover:bg-red-700 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-red-500/20 text-sm transition-all">Registrarse</button>
+                    </form>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="text-center space-y-1">
+                        <div class="w-12 h-12 rounded-2xl bg-red-100 text-nintendo-red flex items-center justify-center mx-auto text-xl mb-3"><i class="fa-solid fa-right-to-bracket"></i></div>
+                        <h3 class="text-xl font-black text-gray-900">Iniciar sesión</h3>
+                        <p class="text-xs text-gray-500">Accede a tu cuenta de reShop</p>
+                    </div>
+                    <form onsubmit="event.preventDefault(); alert('Inicio de sesión simulado'); closeAuthModal();" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Usuario</label>
+                            <input type="text" required placeholder="Tu nombre" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1">Contraseña</label>
+                            <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-nintendo-red/50">
+                        </div>
+                        <button type="submit" class="w-full bg-nintendo-red hover:bg-red-700 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-red-500/20 text-sm transition-all">Entrar</button>
+                    </form>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
         function toggleAutoTranslate(checkbox) {
             autoTranslateEnabled = checkbox.checked;
             localStorage.setItem('reshop_auto_translate', autoTranslateEnabled);
@@ -565,13 +677,11 @@
         async function translateTextOnline(text, targetLang = 'en') {
             if (!text || !autoTranslateEnabled) return text;
             try {
-                // Usamos la API pública y gratuita de MyMemory para traducción automática idéntica a servicios web
                 const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ru|${targetLang}`;
                 const res = await fetch(url);
                 const data = await res.json();
                 if (data && data.responseData && data.responseData.translatedText) {
                     let translated = data.responseData.translatedText;
-                    // Evitar que devuelva mensajes de error de cuota si se excede
                     if (translated.includes('MYMEMORY WARNING')) return text;
                     return translated;
                 }
@@ -626,11 +736,11 @@
             document.getElementById(`section-${tabId}`).classList.remove('hidden');
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = "nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900";
+                btn.className = "nav-btn px-7 py-3.5 rounded-2xl font-black text-base transition-all duration-200 flex items-center space-x-3 text-gray-700 bg-gray-100 hover:bg-gray-200 hover:text-gray-900";
             });
             const activeDesktopBtn = document.getElementById(`tab-btn-${tabId}`);
             if (activeDesktopBtn) {
-                activeDesktopBtn.className = "nav-btn px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-200 flex items-center space-x-2 bg-nintendo-red text-white shadow-md shadow-red-500/20";
+                activeDesktopBtn.className = "nav-btn px-7 py-3.5 rounded-2xl font-black text-base transition-all duration-200 flex items-center space-x-3 bg-nintendo-red text-white shadow-lg shadow-red-500/25";
             }
 
             document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
@@ -850,7 +960,6 @@
                 </div>
             `;
             
-            // Traducir dinámicamente el texto de la tarjeta si está activo
             if (autoTranslateEnabled && displayDesc) {
                 translateTextOnline(displayDesc, currentLang).then(translated => {
                     const descEl = card.querySelector('.card-desc-text');
@@ -969,7 +1078,7 @@
                 portsGrid.innerHTML = `
                     <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-gray-100">
                         <div class="w-16 h-16 bg-red-50 text-nintendo-red rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                            <i class="fa-solid fa-code-merge"></i>
+                            <i class="fa-solid fa-puzzle-piece"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-700">${t.no_ports}</h3>
                         <p class="text-sm text-gray-400 mt-1">${t.no_ports_sub}</p>
@@ -1064,7 +1173,6 @@
             document.getElementById('modal-category').innerText = game.genre || 'Homebrew';
             document.getElementById('modal-size').innerText = game.size || 'N/A';
 
-            // Textos por defecto mientras traduce online
             document.getElementById('modal-dev').innerText = game.developer || 'N/A';
             document.getElementById('modal-pub').innerText = game.publisher || 'N/A';
             document.getElementById('modal-perf').innerText = game.performance || 'N/A';
@@ -1096,7 +1204,6 @@
             modalEl.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
 
-            // TRADUCCIÓN ONLINE REAL DE LAS ESPECIFICACIONES Y DESCRIPCIÓN
             if (autoTranslateEnabled) {
                 if (game.developer) translateTextOnline(game.developer, currentLang).then(res => document.getElementById('modal-dev').innerText = res);
                 if (game.publisher) translateTextOnline(game.publisher, currentLang).then(res => document.getElementById('modal-pub').innerText = res);
@@ -1113,13 +1220,6 @@
             modalEl.classList.add('hidden');
             document.body.style.overflow = '';
         }
-
-        window.addEventListener('click', (e) => {
-            const modalEl = document.getElementById('game-modal');
-            if (e.target === modalEl) {
-                closeModal();
-            }
-        });
 
         function exportCatalogJson() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gamesCatalog, null, 2));
