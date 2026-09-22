@@ -236,7 +236,8 @@
                     </div>
                 </div>
 
-                <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+                <!-- Grilla de 3 columnas en pantallas medianas y grandes -->
+                <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 <div id="chunk-pagination-container" class="mt-8 flex justify-center items-center"></div>
             </div>
         </section>
@@ -927,7 +928,6 @@
 
         function createGameCardHtml(game, t, badgeColor = 'red') {
             const card = document.createElement('div');
-            // Tarjeta compacta (ancho reducido y elementos más finos)
             card.className = "w-56 sm:w-60 flex-shrink-0 bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer transform hover:-translate-y-1";
             card.onclick = () => openModal(game);
 
@@ -965,6 +965,67 @@
                     const descEl = card.querySelector('.card-desc-text');
                     if (descEl) descEl.innerText = translated;
                 });
+            }
+
+            return card;
+        }
+
+        // Tarjeta optimizada para la sección principal y de ports (cuadrícula de 3 columnas, sin descripción, con publicador y desarrollador)
+        function createGridGameCardHtml(game, t) {
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer transform hover:-translate-y-1";
+            card.onclick = () => openModal(game);
+
+            const coverImg = game.cover || game.image || 'https://placehold.co/600x400/E60012/FFFFFF?text=reShop';
+            const displayGenre = game.genre ? game.genre.split(',')[0].trim() : 'Homebrew';
+            const displaySize = game.size || 'N/A';
+            const publisher = game.publisher || '-';
+            const developer = game.developer || '-';
+
+            card.innerHTML = `
+                <div class="relative h-32 bg-gray-100 overflow-hidden">
+                    <img src="${coverImg}" alt="${game.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/E60012/FFFFFF?text=reShop'">
+                    <div class="absolute top-2.5 right-2.5 bg-black/60 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
+                        ${displaySize}
+                    </div>
+                    <div class="absolute top-2.5 left-2.5 bg-nintendo-red text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                        ${displayGenre}
+                    </div>
+                </div>
+                <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                        <h3 class="font-extrabold text-gray-900 text-xs sm:text-sm mb-1.5 group-hover:text-nintendo-red transition-colors line-clamp-1">${game.title || 'Sin título'}</h3>
+                        <div class="space-y-1 text-[11px] text-gray-500 font-medium">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400 font-semibold" data-i18n="meta_pub">Publicador</span>
+                                <span class="font-bold text-gray-700 truncate max-w-[120px] pub-text">${publisher}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400 font-semibold" data-i18n="meta_dev">Desarrollador</span>
+                                <span class="font-bold text-gray-700 truncate max-w-[120px] dev-text">${developer}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-gray-50 flex items-center justify-between text-[11px] font-bold text-nintendo-red">
+                        <span>${t.details_text}</span>
+                        <i class="fa-solid fa-chevron-right text-[9px] transform group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            `;
+
+            if (autoTranslateEnabled) {
+                if (publisher && publisher !== '-') {
+                    translateTextOnline(publisher, currentLang).then(res => {
+                        const el = card.querySelector('.pub-text');
+                        if (el) el.innerText = res;
+                    });
+                }
+                if (developer && developer !== '-') {
+                    translateTextOnline(developer, currentLang).then(res => {
+                        const el = card.querySelector('.dev-text');
+                        if (el) el.innerText = res;
+                    });
+                }
             }
 
             return card;
@@ -1009,8 +1070,7 @@
             const paginatedItems = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
             paginatedItems.forEach(game => {
-                const card = createGameCardHtml(game, t, 'red');
-                card.classList.remove('w-56', 'sm:w-60', 'flex-shrink-0');
+                const card = createGridGameCardHtml(game, t);
                 grid.appendChild(card);
             });
 
@@ -1088,39 +1148,8 @@
             }
 
             ports.forEach(port => {
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer";
-                card.onclick = () => openModal(port);
-
-                const coverImg = port.cover || port.image || 'https://placehold.co/600x400/2D3748/FFFFFF?text=Port';
-                const displayDesc = port.description || '';
-
-                card.innerHTML = `
-                    <div class="relative h-32 bg-gray-900 overflow-hidden">
-                        <img src="${coverImg}" alt="${port.title}" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/2D3748/FFFFFF?text=Port'">
-                        <div class="absolute top-2.5 left-2.5 bg-gray-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-white/20">
-                            Homebrew / Port
-                        </div>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-extrabold text-gray-900 text-xs sm:text-sm mb-1 group-hover:text-nintendo-red transition-colors">${port.title}</h3>
-                            <p class="text-[11px] text-gray-500 font-medium line-clamp-2 port-desc-text">${displayDesc}</p>
-                        </div>
-                        <div class="mt-3 pt-2 border-t border-gray-50 flex items-center justify-between text-[11px] font-bold text-gray-700">
-                            <span class="text-emerald-600 font-black">${port.size || 'N/A'}</span>
-                            <span class="text-nintendo-red">${t.view_port_text}</span>
-                        </div>
-                    </div>
-                `;
+                const card = createGridGameCardHtml(port, t);
                 portsGrid.appendChild(card);
-
-                if (autoTranslateEnabled && displayDesc) {
-                    translateTextOnline(displayDesc, currentLang).then(translated => {
-                        const descEl = card.querySelector('.port-desc-text');
-                        if (descEl) descEl.innerText = translated;
-                    });
-                }
             });
         }
 
