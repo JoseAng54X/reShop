@@ -1,0 +1,151 @@
+{
+  "total_items": 7152,
+  "chunk_size": 200,
+  "total_chunks": 36,
+  "chunks": [
+    {
+      "file": "chunk_0.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_1.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_2.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_3.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_4.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_5.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_6.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_7.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_8.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_9.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_10.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_11.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_12.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_13.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_14.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_15.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_16.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_17.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_18.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_19.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_20.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_21.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_22.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_23.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_24.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_25.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_26.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_27.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_28.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_29.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_30.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_31.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_32.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_33.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_34.json",
+      "items": 200
+    },
+    {
+      "file": "chunk_35.json",
+      "items": 152
+    }
+  ]
+}
