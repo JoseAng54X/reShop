@@ -60,7 +60,7 @@
         }
     </style>
 </head>
-<body class="bg-nintendo-bg text-nintendo-text font-sans h-full flex flex-col antialiased selection:bg-nintendo-red selection:text-white">
+<body class="bg-nintendo-bg text-nintendo-text font-sans h-full flex flex-col antialiased selection:bg-nintendo-red selection:text-white pb-20 md:pb-0">
 
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,23 +124,19 @@
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Navigation Bar -->
-        <div class="md:hidden flex justify-around bg-white border-t border-gray-100 py-3 px-2">
-            <button onclick="switchTab('juegos')" id="mobile-tab-juegos" class="mobile-nav-btn flex flex-col items-center text-nintendo-red text-xs font-bold">
-                <i class="fa-solid fa-store text-xl mb-1"></i>
-                <span data-i18n="tab_games">Juegos</span>
-            </button>
-            <button onclick="switchTab('ports')" id="mobile-tab-ports" class="mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold">
-                <i class="fa-solid fa-puzzle-piece text-xl mb-1"></i>
-                <span data-i18n="tab_ports">Ports</span>
-            </button>
-            <button onclick="switchTab('ajustes')" id="mobile-tab-ajustes" class="mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold">
-                <i class="fa-solid fa-gear text-xl mb-1"></i>
-                <span data-i18n="tab_settings">Ajustes</span>
-            </button>
-        </div>
     </header>
+
+    <!-- Mobile Bottom Navigation Bar (Fija abajo persiguiendo el scroll) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 py-2 px-6 flex justify-around items-center z-40 shadow-lg">
+        <button onclick="switchTab('juegos')" id="mobile-tab-juegos" class="mobile-nav-btn flex flex-col items-center text-nintendo-red text-xs font-bold transition-colors">
+            <i class="fa-solid fa-store text-xl mb-0.5"></i>
+            <span data-i18n="tab_games">Juegos</span>
+        </button>
+        <button onclick="switchTab('ports')" id="mobile-tab-ports" class="mobile-nav-btn flex flex-col items-center text-gray-400 text-xs font-bold transition-colors">
+            <i class="fa-solid fa-puzzle-piece text-xl mb-0.5"></i>
+            <span data-i18n="tab_ports">Ports</span>
+        </button>
+    </nav>
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 overflow-y-auto space-y-8">
 
@@ -970,7 +966,6 @@
             return card;
         }
 
-        // Tarjeta optimizada para la sección principal y de ports (cuadrícula responsiva, sin descripción, con publicador y desarrollador)
         function createGridGameCardHtml(game, t) {
             const card = document.createElement('div');
             card.className = "bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group cursor-pointer transform hover:-translate-y-1";
