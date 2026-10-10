@@ -42,7 +42,7 @@
 ## Some Cool Things About this:
 
 > [!TIP]
-> You Can Connect reShop to an External ```Json Catalog``` and The page would Load it if it have this structure:
+> You Can Connect reShop to an External ```Json Catalog``` on Config. and The page would Load it if the json have this structure:
 
 ```{
   "title": "Cool game [NSZ/NSP/XCI]",
