@@ -31,11 +31,11 @@
 
 > In reshop we Dont Want to earn Money distributing not that Legal Copies of You Know
 
-```We made it Fully Free because of Fear of Getting deleted by Some SW1TC+ G4M$S ```
+```We made it Fully Free because of Fear of Getting deleted by Some SW1TC+ G4M$S```
 
 > It uses Torrent, If the Page Got deleted, you can download The json on langeges repo and Start Download searching an magnet.
 
-``` We Are Making an Fully _C++ HomeBrew App_ to Connect the web with your console :}. ```
+```We Are Making an Fully _C++ HomeBrew App_ to Connect the web with your console :}.```
 
 ---
 
