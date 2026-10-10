@@ -69,7 +69,7 @@
 
 > [!IMPORTANT]
 > ## Libraries Used on This Project:
-> [!HTML5] (https://img.shields.io/badge/-HTML5-E34F26?logo=html5&logoColor=white) |
+> [!HTML5] <img src= "https://img.shields.io/badge/-HTML5-E34F26?logo=html5&logoColor=white">
 
 
 </div>
