@@ -308,6 +308,10 @@
                     <div>
                         <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block" data-i18n="modal_size_label">Tamaño (Size)</span>
                         <span id="modal-size" class="text-base font-black text-reshop-orange">0 MB</span>
+                        <div class="flex items-center gap-1 mt-1.5">
+                            <i class="fa-solid fa-download text-[10px] text-gray-400"></i>
+                            <span id="modal-dl-count" class="text-[11px] font-bold text-gray-600">0 descargas</span>
+                        </div>
                     </div>
                     <div class="flex flex-col items-end gap-1 w-full sm:w-auto">
                         <div class="flex flex-wrap gap-2 justify-end">
@@ -495,6 +499,74 @@
 
         const manifestUrl = "https://raw.githubusercontent.com/JoseAng54X/reShop/main/catalog_chunks/manifest.json";
         const chunksBaseUrl = "https://raw.githubusercontent.com/JoseAng54X/reShop/main/catalog_chunks/";
+
+        // ============================================================
+        // CONTADOR DE DESCARGAS COMPARTIDO (Firebase Realtime Database)
+        // ============================================================
+        // 1) Crea un proyecto gratis en https://console.firebase.google.com
+        // 2) Activa "Realtime Database" (modo de prueba está bien para empezar)
+        // 3) Copia aquí la URL de tu base (termina en .firebaseio.com)
+        const FIREBASE_DB_URL = "https://reshopbrewdatabase-default-rtdb.firebaseio.com";
+
+        // Conteos de descarga en memoria: { claveDelJuego: numero }
+        let downloadCounts = {};
+
+        // Genera una clave corta y estable por juego (basada en el magnet o el título)
+        // para no depender de un "id" que el JSON del catálogo no tiene.
+        function gameKeyFor(item) {
+            const base = (item.magnet || item.title || "unknown").toString();
+            let hash = 5381;
+            for (let i = 0; i < base.length; i++) {
+                hash = ((hash << 5) + hash + base.charCodeAt(i)) >>> 0;
+            }
+            return "g" + hash.toString(36);
+        }
+
+        function getDownloadCount(item) {
+            return downloadCounts[gameKeyFor(item)] || 0;
+        }
+
+        // Trae TODOS los contadores en una sola petición (clave para poder
+        // ordenar "Lo más popular" sin tener que pedir juego por juego).
+        async function loadDownloadCounts() {
+            try {
+                const res = await fetch(`${FIREBASE_DB_URL}/downloads.json`, { cache: "no-store" });
+                if (res.ok) {
+                    const data = await res.json();
+                    downloadCounts = data || {};
+                }
+            } catch (err) {
+                console.warn("No se pudieron cargar las descargas compartidas:", err);
+            }
+        }
+
+        // Se llama al presionar "Abrir Descarga". Suma 1 localmente (respuesta
+        // instantánea en pantalla) y lo guarda en Firebase para que lo vean todos.
+        async function registerDownload(item) {
+            const key = gameKeyFor(item);
+            const next = (downloadCounts[key] || 0) + 1;
+            downloadCounts[key] = next;
+
+            document.querySelectorAll(`.dl-key-${key}.dl-badge`).forEach(el => {
+                el.innerHTML = `<i class="fa-solid fa-download mr-1"></i>${next}`;
+            });
+            document.querySelectorAll(`.dl-key-${key}.dl-text`).forEach(el => {
+                el.innerText = `${next} descargas`;
+            });
+
+            try {
+                await fetch(`${FIREBASE_DB_URL}/downloads/${key}.json`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(next)
+                });
+            } catch (err) {
+                console.warn("No se pudo guardar la descarga en el servidor compartido:", err);
+            }
+
+            // Re-ordena "Lo más popular" al instante con el nuevo conteo
+            renderPopularAndNewest();
+        }
 
         function toggleUserMenu(e) {
             e.stopPropagation();
@@ -713,7 +785,10 @@
             const t = translations[currentLang];
 
             try {
-                const manifestRes = await fetch(manifestUrl, { cache: "no-store" });
+                const [manifestRes] = await Promise.all([
+                    fetch(manifestUrl, { cache: "no-store" }),
+                    loadDownloadCounts()
+                ]);
                 if (!manifestRes.ok) throw new Error(`Manifest error: ${manifestRes.status}`);
                 const manifest = await manifestRes.json();
 
@@ -835,7 +910,7 @@
             const cleanList = gamesCatalog.filter(item => !isNroItem(item));
             if (cleanList.length === 0) return;
 
-            [...cleanList].sort((a, b) => parseSizeToMB(b.size) - parseSizeToMB(a.size)).slice(0, 12).forEach(item => {
+            [...cleanList].sort((a, b) => getDownloadCount(b) - getDownloadCount(a)).slice(0, 12).forEach(item => {
                 const card = createGameCardHtml(item, t, "amber");
                 popGrid.appendChild(card);
             });
@@ -856,6 +931,8 @@
             const size = item.size || "N/A";
             const desc = item.description || "";
             const badgeColor = badgeType === "amber" ? "bg-amber-500" : "bg-reshop-orange";
+            const dlKey = gameKeyFor(item);
+            const dlCount = getDownloadCount(item);
 
             card.innerHTML = `
                 <div class="relative h-28 bg-orange-50 overflow-hidden flex items-center justify-center">
@@ -870,6 +947,9 @@
                     </div>
                     <div class="absolute top-2.5 left-2.5 ${badgeColor} text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
                         ${genre}
+                    </div>
+                    <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-black px-2 py-0.5 rounded-full dl-badge dl-key-${dlKey}">
+                        <i class="fa-solid fa-download mr-1"></i>${dlCount}
                     </div>
                 </div>
                 <div class="p-4 flex-1 flex flex-col justify-between">
@@ -904,6 +984,8 @@
             const size = item.size || "N/A";
             const publisher = item.publisher || "-";
             const developer = item.developer || "-";
+            const dlKey = gameKeyFor(item);
+            const dlCount = getDownloadCount(item);
 
             card.innerHTML = `
                 <div class="relative h-24 sm:h-28 bg-orange-50 overflow-hidden flex items-center justify-center">
@@ -918,6 +1000,9 @@
                     </div>
                     <div class="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-reshop-orange text-white text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
                         ${genre}
+                    </div>
+                    <div class="absolute bottom-1.5 left-1.5 sm:bottom-2.5 sm:left-2.5 bg-black/60 backdrop-blur-md text-white text-[9px] font-black px-1.5 sm:px-2 py-0.5 rounded-full dl-badge dl-key-${dlKey}">
+                        <i class="fa-solid fa-download mr-1"></i>${dlCount}
                     </div>
                 </div>
                 <div class="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2">
@@ -1141,9 +1226,16 @@
             if (item.magnet) {
                 magnetBtn.href = item.magnet;
                 magnetBtn.style.display = "flex";
+                magnetBtn.onclick = () => registerDownload(item);
             } else {
                 magnetBtn.style.display = "none";
+                magnetBtn.onclick = null;
             }
+
+            const dlKey = gameKeyFor(item);
+            const dlCountEl = document.getElementById("modal-dl-count");
+            dlCountEl.className = `text-[11px] font-bold text-gray-600 dl-text dl-key-${dlKey}`;
+            dlCountEl.innerText = `${getDownloadCount(item)} descargas`;
 
             const urlBtn = document.getElementById("modal-url-btn");
             if (item.url) {
