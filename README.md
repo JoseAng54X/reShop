@@ -3,7 +3,7 @@
 # reShop HB Store
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/JoseAng54X/reShop/main/catalog_chunks/banner.png" alt="reShop Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
+  <img src="https://raw.githubusercontent.com/JoseAng54X/reShop/main/1791599442329.jpg" alt="reShop Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
 </p>
 
 ### **An 🏴‍☠️ Store Webpage for N1NT$ND@ SW1+CH.**
