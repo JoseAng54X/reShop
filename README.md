@@ -6,9 +6,9 @@
   <img src="https://raw.githubusercontent.com/JoseAng54X/reShop/main/catalog_chunks/banner.png" alt="reShop Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
 </p>
 
-### 🚀 **La tienda web masiva, ligera y ultrarrápida para catálogos Homebrew y Juegos.**
+### **An 🏴‍☠️ Store Webpage for N1NT$ND@ SW1+CH.**
 
-*Explora miles de títulos en tiempo real directamente desde tu navegador sin servidores pesados.*
+*Explore a Massive Catalog Of Games, +8000 Games That U can download with a torrent, without ads.*
 
 ---
 
@@ -23,17 +23,17 @@
 ---
 
 > [!NOTE]
-> **reShop** es una aplicación cliente estática de una sola página (**Single Page Application - SPA**) diseñada para cargar catálogos masivos alojados en repositorios remotos mediante arquitecturas JSON fragmentadas (*manifest + chunks*).
+> **reShop** is an web client, We use an catalog fetched from @langegen/switch_games, We dont Own Those Copies.
 
 ---
 
-## ⚡ ¿Por qué reShop?
+## ¿Why Without Ads?
 
 <table border="0">
   <tr>
     <td width="60%">
-      <p><b>reShop</b> reimagina cómo se exploran los catálogos estáticos de videojuegos y homebrew. Tradicionalmente, cargar un JSON con más de 10,000 entradas congelaba la interfaz del usuario.</p>
-      <p>Con nuestra arquitectura basada en <i>Chunks</i> y renderizado dinámico:</p>
+      <p><b>reShop</b> We dont Wanted Ads on an Not That Legal WebPage, we can't earn money distributing copies of you know</p>
+      <p>¿Why Torrent?<i>We Prefered Torrent</i> Because its more </p>
       <ul>
         <li>⚡ <b>Carga instantánea:</b> Los primeros 200 items están listos en milisegundos.</li>
         <li>🌐 <b>Traducción al vuelo:</b> Motor online para metadatos en múltiples idiomas.</li>
