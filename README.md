@@ -70,6 +70,7 @@
 > [!IMPORTANT]
 > ## Libraries Used on This Project:
 > <img src= "https://img.shields.io/badge/-HTML5-E34F26?logo=html5&logoColor=white"> HTML5
+---
 > <img src= "https://img.shields.io/badge/-TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white"> TailWindCSS
 > <img src= "https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black"> JavaScript
 > <img src= "https://img.shields.io/badge/-Google_Fonts-4285F4?logo=google&logoColor=white"> Google Fonts
