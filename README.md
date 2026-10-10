@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎮 reShop Store
+# reShop HB Store
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/JoseAng54X/reShop/main/catalog_chunks/banner.png" alt="reShop Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
@@ -29,46 +29,42 @@
 
 ## ¿Why Without Ads?
 
-<table border="0">
-  <tr>
-    <td width="60%">
-      <p><b>reShop</b> We dont Wanted Ads on an Not That Legal WebPage, we can't earn money distributing copies of you know</p>
-      <p>¿Why Torrent?<i>We Prefered Torrent</i> Because its more </p>
-      <ul>
-        <li>⚡ <b>Carga instantánea:</b> Los primeros 200 items están listos en milisegundos.</li>
-        <li>🌐 <b>Traducción al vuelo:</b> Motor online para metadatos en múltiples idiomas.</li>
-        <li>📱 <b>Multi-plataforma:</b> Diseñado responsivamente para móviles, consolas y escritorio.</li>
-      </ul>
-    </td>
-    <td width="40%" align="center">
-      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm9oM2p1YTF5a3ZzZ2J0dmxveGZzcXpyaXp6eXp6eXp6eXp6eXp6JnB2PWN2MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26tn33aiTi1jkl6H6/giphy.gif" width="100%" style="border-radius:12px;" alt="Fast Loading GIF">
-    </td>
-  </tr>
-</table>
+# In reshop we Dont Want to earn Money distributing not that Legal Copies of You Know
+
+We made it Fully Free besarse of Fear of Getting deleted by Some _SW1TC+ G4M$S_
+
+# It uses Torrent, If the Page Got deleted, you can download The json on langeges repo and Start Download searching an magnet.
+
+We Are Making an Fully _C++ HomeBrew App_ to Connect the web with your console :}.
 
 ---
 
-## 🔥 Características Destacadas
+## Some Cool Things About this:
 
 > [!TIP]
-> Puedes conectar **reShop** con tu propio catálogo alojando un archivo `manifest.json` y carpetas de *chunks* en cualquier CDN o servicio de alojamiento estático como GitHub Pages.
+> You Can Connect reShop to an External ```Json Catalog``` and The page would Load it if it have this structure:
 
+```{
+  "title": "Cool game [NSZ/NSP/XCI]",
+  "size": "442.3 MB",
+  "magnet": "magnet:?xt=urn:btih:1718E610...",
+  "topic_id": :03939393",
+  "url": "https://coolgameurl.com/2727...",
+  "year": "2025, February",
+  "genre": "Action, Role-Playing, Beatemup",
+  "developer": "CoolDeveloper",
+  "publisher": "CoolPublisher",
+  "image_format": ".NSZ/NSP/XCI",
+  "interface_lang": "[RUS / ENG / Multi 10]",
+  "voice_lang": "English",
+  "performance": "(FW 2.5.0 / Atmosphere 1.11.2)",
+  "multiplayer": "No",
+  "cover": "https://i7.imageban.ru/out/...",
+  "screenshots": ["https://i128.fastpic.org/thumb/..."],
+  "description": "Place a thing there...",
+  "title_id": "01003CB02246E000"
+}
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                             RESHOP ARCHITECTURE                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  [ Manifest JSON ]  ──►  [ Chunk 001.json ] ──► ( Render Inmediato UI )    │
-│                     ──►  [ Chunk 002.json ] ──► ( Carga en Segundo Plano )  │
-│                     ──►  [ Chunk 003.json ] ──► ( Paginación Dinámica )     │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
-
-- 🧩 **Smart Ports & Homebrew Categorizer:** Algoritmo de filtrado automático que identifica formatos `.nro` y etiquetas homebrew para separarlos en su propia pestaña dedicada.
-- 🌍 **Soporte Multilingüe Dinámico (i18n):** Cambio de idioma instantáneo entre Español e Inglés sin recargar la página.
-- 🤖 **Traducción Automática MyMemory:** Los títulos, descripciones y metadatos en ruso u otros idiomas son traducidos en tiempo real al abrir la ficha técnica.
-- 📊 **Tracker de Descargas Local:** Contador de clics e interacciones con enlaces Magnet integrado de forma persistente mediante `localStorage`.
-- 📦 **Gestor de Catálogo Local y Exportación:** Añade títulos personalizados y exporta el catálogo completo listo para respaldar o distribuir.
-
 ---
 
 ## 🛠️ Vista Previa de la Interfaz
