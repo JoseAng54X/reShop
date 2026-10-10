@@ -78,4 +78,9 @@
 > | <img src="https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript"> | **JavaScript** |
 > | <img src="https://img.shields.io/badge/-Google_Fonts-4285F4?logo=google&logoColor=white" alt="Google Fonts"> | **Google Fonts** |
 
+---
+
+> [!NOTE]
+> Made With ♥️ By JustStarr
+
 </div>
